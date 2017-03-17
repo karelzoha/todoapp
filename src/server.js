@@ -1,8 +1,16 @@
 import http from 'http'
+import url from 'url'
 
 const server = http.createServer((req, res) => {
-    res.write('Hello world!')
-    res.end()
+    const parsedUrl = url.parse(req.url)
+    if (typeof parsedUrl.pathname === 'string' && parsedUrl.pathname.match(/\/v1\.0\.0\/task(\/)?/)) {
+        res.write('Hello world!')    
+        res.end()
+    } else {
+        res.statusCode = 400
+        res.statusMessage = 'Bad request'
+        res.end()
+    }
 })
 
 server.on('clientError', (err, socket) => {
