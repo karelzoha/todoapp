@@ -11,6 +11,8 @@
   "author": "Karel Žoha",
   "license": "ISC",
   "devDependencies": {
+    "babel-preset-env": "^1.2.2",
+    "babel-register": "^6.24.0",
     "nodemon": "^1.11.0"
   }
 }
