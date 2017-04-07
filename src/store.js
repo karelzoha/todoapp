@@ -71,5 +71,34 @@ const taskList = [
 ]
 
 export default {
-    getTask: (id) => (taskList.filter((_) => _.id === id))
+    getTask: (id) => {
+        const tasks = taskList.filter((_) => _.id === id)
+        return tasks.length > 0 ? tasks[0] : {}
+    },
+    addTask: (task) => (taskList.push(task)),
+    deleteTask: (id) => {
+        taskList = taskList.filter((_) => (_.id !== id))
+    },
+    updateTask: (id, newTask) => {
+        taskList = taskList.map((_) => (_.id === id ? newTask : _))
+    },
+    listTasks: ({ page, pageSize, filter}) => {
+        const tasks = taskList.filter((_) => {
+            let isOk = false
+            Object.keys(filter).forEach((key) => {
+                if (_[key] === filter[key]) {
+                    isOk = true
+                } else {
+                    isOk = false
+                }
+            })
+            return isOk
+        })
+        const begin = page * pageSize
+        const end = begin + pageSize
+        return {
+            total: taskList.length,
+            tasks: tasks.slice(begin, end)
+        }
+    },
 }
