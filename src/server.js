@@ -1,6 +1,7 @@
 import http from 'http'
 import url from 'url'
 import express, { Router } from 'express'
+import bodyParser from 'body-parser'
 
 export default function({ store }) {
     const app = express()
@@ -8,34 +9,17 @@ export default function({ store }) {
 
     router.get('/task/:taskId', (req, res) => {
         const taskId = req.params.taskId
-        const body = JSON.stringify(store.getTask(parseInt(taskId, 10)))
-        res.writeHead(200, {
-            'Content-Length': Buffer.byteLength(body),
-            'Content-Type': 'application/json; charset=utf-8'
-        })
-        res.write(body)
-        res.end()
+        const task = store.getTask(parseInt(taskId, 10))
+        res.status(200).json(task)
     })
 
     router.post('/task', (req, res) => {
-        let body = ''
-        req.setEncoding('utf8')
-
-        req.on('data', (data) => {
-            body = body + data
-        })
-
-        req.on('end', () => {
-            res.statusCode = 200
-            res.writeHead(200, {
-                'Content-Length': Buffer.byteLength(body),
-                'Content-Type': 'application/json; charset=utf-8'
-            })
-            res.write(body)
-            res.end()
-        })
+        const body = req.body
+        const result = JSON.stringify(body)
+        res.status(200).json(body)
     })
 
+    app.use(bodyParser.json())
     app.use('/v1.0.0/', router)
 
     return {
