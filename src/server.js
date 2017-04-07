@@ -1,5 +1,3 @@
-import http from 'http'
-import url from 'url'
 import express, { Router } from 'express'
 import bodyParser from 'body-parser'
 

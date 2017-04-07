@@ -1,4 +1,4 @@
-const taskList = [
+let taskList = [
     {
         id: 1,
         title: 'Task 1',
