@@ -24,7 +24,7 @@ export default function({ store }) {
     })
 
     router.post('/task', (req, res) => {
-        const body = req.body
+        let body = req.body
         if (body.list) {
             const {total, tasks } = store.listTasks(body.list)
             res.status(200).json({
@@ -50,6 +50,10 @@ export default function({ store }) {
         })
     })
 
+    app.use(function (err, req, res, next) {
+        console.error(err.stack)
+        res.status(500).send('Something broke!')
+    })
     app.use(bodyParser.json())
     app.use('/v1.0.0/', router)
 

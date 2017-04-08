@@ -4,7 +4,7 @@ let taskList = [
         title: 'Task 1',
         description: 'Delší popis tasku',
         dueDate: '2017-04-10',
-        state: 'UNFINISHED',
+        state: 'FINISHED',
         created: '2017-03-15 14:00:00',
         updated: '2017-03-15 14:00:00',
         subTasks: [
@@ -83,7 +83,7 @@ export default {
         taskList = taskList.map((_) => (_.id === id ? newTask : _))
     },
     listTasks: ({ page, pageSize, filter}) => {
-        const tasks = taskList.filter((_) => {
+        const tasks = filter ? taskList.filter((_) => {
             let isOk = false
             Object.keys(filter).forEach((key) => {
                 if (_[key] === filter[key]) {
@@ -93,7 +93,7 @@ export default {
                 }
             })
             return isOk
-        })
+        }) : taskList
         const begin = page * pageSize
         const end = begin + pageSize
         return {
